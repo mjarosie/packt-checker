@@ -4,8 +4,8 @@ from bs4 import BeautifulSoup
 
 import sys
 import config as cfg
-from message import create_email, send_email
-from offer import create_offer
+import packt_offer as offer
+import message
 
 
 def main():
@@ -16,10 +16,30 @@ def main():
         print('Sender: ' + args.sender)
         print('List of recipients: [' + ', '.join(args.recipients) + ']')
         print('URL: ' + args.url)
-    soup = prepare_soup(args.url)
-    offer = create_offer(soup)
-    email = create_email(offer, args.sender, args.recipients)
-    send_email(email, args.recipients)
+
+    # Prepare a page to be scraped.
+    page_content = urllib.request.urlopen(args.url).read()
+    soup = get_page_soup(page_content)
+
+    # Get offer parameters.
+    offer_image_url = offer.offer_image_url_extracter(soup)
+    offer_title = offer.offer_title_extracter(soup)
+    offer_description = offer.offer_description_extracter(soup)
+
+    if cfg.INFO:
+        if offer_image_url != '':
+            print('Offer image url: ' + offer_image_url)
+        if offer_title != '':
+            print('Offer title: ' + offer_title)
+        if offer_description != '':
+            print('Offer description: ' + offer_description)
+
+    # Prepare a message to be send.
+    image = offer.image_getter(args.url)
+    msg_to_be_send = offer.message_creator(image, offer_title, offer_description, args.sender, args.recipients)
+
+    # Send a message.
+    message.send_message(msg_to_be_send, args.sender, args.recipients)
 
 
 def parse_args(args=None):
@@ -35,9 +55,8 @@ def parse_args(args=None):
     return args
 
 
-def prepare_soup(url):
-    r = urllib.request.urlopen(url).read()
-    soup = BeautifulSoup(r, 'html.parser')
+def get_page_soup(page_content):
+    soup = BeautifulSoup(page_content, 'html.parser')
     for linebreak in soup.find_all('br'):
         linebreak.extract()
     return soup
