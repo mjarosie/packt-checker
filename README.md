@@ -1,4 +1,4 @@
-### packtpub_checker
+# Packtpub checker
 
 I proudly present packtpub_checker script, which can be used to set as a windows scheduled task
 to scrap packtpub.com free learning offers page in order to send its content about free book by email.
@@ -10,6 +10,10 @@ Application usage:
 ```python check_packt.py [-u url_to_packtpub_free_offer] [-s sender] [-r recipient_1] [-r recipient_2] ...```
 
 If any of those optional arguments is missing, script tries to derive any missing parameters from config.py file.
+
+## Running tests
+
+In order to run tests run ```nosetests``` in the root directory of the project.
 
 ## Schedule as a windows task
 
