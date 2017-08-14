@@ -2,18 +2,45 @@ import urllib.request
 from argparse import ArgumentParser
 from bs4 import BeautifulSoup
 
+import sys
 import config as cfg
 from message import create_email, send_email
 from offer import create_offer
 
 
 def main():
-    parser = create_parser()
-    args = parse_args(parser)
+    if cfg.INFO:
+        print('Started script with parameters: ' + '; '.join(sys.argv[1:]))
+    args = parse_args()
+    if cfg.INFO:
+        print('Sender: ' + args.sender)
+        print('List of recipients: ' + ', '.join(args.recipients))
+        print('URL: ' + args.url)
     soup = prepare_soup(args.url)
     offer = create_offer(soup)
     email = create_email(offer, args.sender, args.recipients)
     send_email(email, args.recipients)
+
+
+def parse_args(args=None):
+    """Parses command line arguments, overrides the default behaviour of argparse which appends arguments to default value.
+
+    :param args: List of command line arguments to parse (for ex. ['-s', 'sender@mail.com', '-r', 'recipient1@mail,com']
+    :return: Namespace with fields defined while creating parser.
+    """
+    parser = create_parser()
+    args, unknown = parser.parse_known_args(args)
+    if len(args.recipients) == 0:
+        args.recipients = cfg.recipients
+    return args
+
+
+def prepare_soup(url):
+    r = urllib.request.urlopen(url).read()
+    soup = BeautifulSoup(r, 'html.parser')
+    for linebreak in soup.find_all('br'):
+        linebreak.extract()
+    return soup
 
 
 def create_parser():
@@ -30,22 +57,6 @@ def create_parser():
     parser.add_argument('-u', '--url', default=cfg.url,
                         help='The site under which script is supposed to look for a description of a free offer by packtpub.')
     return parser
-
-
-def parse_args(parser):
-    """Helper function which overrides the default behaviour of argparse which appends arguments to default value."""
-    args = parser.parse_args()
-    if len(args.recipients) == 0:
-        args.recipients = cfg.recipients
-    return args
-
-
-def prepare_soup(url):
-    r = urllib.request.urlopen(url).read()
-    soup = BeautifulSoup(r, 'html.parser')
-    for linebreak in soup.find_all('br'):
-        linebreak.extract()
-    return soup
 
 
 if __name__ == '__main__':
