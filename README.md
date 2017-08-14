@@ -14,6 +14,7 @@ If any of those optional arguments is missing, script tries to derive any missin
 ## Running tests
 
 In order to run tests run ```nosetests``` in the root directory of the project.
+To run the tests with code coverage, run ```nosetests --with-coverage --cover-package=src --cover-inclusive```
 
 ## Schedule as a windows task
 
