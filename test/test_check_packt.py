@@ -1,26 +1,38 @@
-import unittest
+from nose.tools import assert_equals
 from check_packt import parse_args
 import config as cfg
 
 
-class TestParser(unittest.TestCase):
+class TestParser:
     def test_parse_args_all_default_arguments(self):
         args = parse_args()
-        self.assertEqual(args.sender, cfg.sender)
-        self.assertEqual(args.recipients, cfg.recipients)
-        self.assertEqual(args.url, cfg.url)
+        assert_equals(args.sender, cfg.sender)
+        assert_equals(args.recipients, cfg.recipients)
+        assert_equals(args.url, cfg.url)
 
     def test_parse_args_wrong_arguments(self):
         args = parse_args(['-l', '-m'])
-        self.assertEqual(args.sender, cfg.sender)
-        self.assertEqual(args.recipients, cfg.recipients)
-        self.assertEqual(args.url, cfg.url)
+        assert_equals(args.sender, cfg.sender)
+        assert_equals(args.recipients, cfg.recipients)
+        assert_equals(args.url, cfg.url)
 
     def test_parse_args_sender_specified(self):
-        args = parse_args(['-s', 'sender@gmail.com'])
-        self.assertEqual(args.sender, 'sender@gmail.com')
-        self.assertEqual(args.recipients, cfg.recipients)
-        self.assertEqual(args.url, cfg.url)
+        args = parse_args(['-s', 'sender@mail.com'])
+        assert_equals(args.sender, 'sender@mail.com')
+        assert_equals(args.recipients, cfg.recipients)
+        assert_equals(args.url, cfg.url)
+
+    def test_parse_args_one_recipient_specified(self):
+        args = parse_args(['-r', 'recipient1@mail.com'])
+        assert_equals(args.sender, cfg.sender)
+        assert_equals(args.recipients, ['recipient1@mail.com'])
+        assert_equals(args.url, cfg.url)
+
+    def test_parse_args_multiple_recipients_specified(self):
+        args = parse_args(['-r', 'recipient1@mail.com', '-r', 'recipient2@mail.com'])
+        assert_equals(args.sender, cfg.sender)
+        assert_equals(args.recipients, ['recipient1@mail.com', 'recipient2@mail.com'])
+        assert_equals(args.url, cfg.url)
 
 
 # class TestPrepareSoup(unittest.TestCase):
@@ -70,6 +82,6 @@ class TestParser(unittest.TestCase):
 #
 #     def test_prepare_soup(self):
 #         pass
-
-if __name__ == '__main__':
-    unittest.main()
+#
+# if __name__ == '__main__':
+#     unittest.main()

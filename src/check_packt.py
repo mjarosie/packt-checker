@@ -14,7 +14,7 @@ def main():
     args = parse_args()
     if cfg.INFO:
         print('Sender: ' + args.sender)
-        print('List of recipients: ' + ', '.join(args.recipients))
+        print('List of recipients: [' + ', '.join(args.recipients) + ']')
         print('URL: ' + args.url)
     soup = prepare_soup(args.url)
     offer = create_offer(soup)
