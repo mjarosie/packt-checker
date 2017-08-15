@@ -32,7 +32,7 @@ To do this, use the following command:
 
 and then write a following entry into the file:
 
-```0 12 * * * cd /virtual/env/root/directory && bin/python3 packt_checker/src/check_packt.py > log.txt```
+```0 12 * * * cd /virtual/env/root/directory && bin/python3 packt_checker/src/check_packt.py > /path/to/log.txt 2>/path/to/error.txt```
 
 This entry will tell cron to do the following commands:
 - cd (change directory) to /virtual/env/root/directory (this is where your virtualenv is).
