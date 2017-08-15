@@ -20,9 +20,27 @@ If any of those optional arguments is missing, script tries to derive any missin
 In order to run tests run ```nosetests``` in the root directory of the project.
 To run the tests with code coverage, run ```nosetests --with-coverage --cover-package=src --cover-inclusive```
 
-## Schedule as a windows task
+## Schedule as a task
 
-As an example, in order to schedule the task to run daily at 15:00, you need to run the following command in cmd with administrator privileges.
+First, you need to set up a virtual environment and install the needed packages listed in requirements.txt using pip.
+Then, git clone this project into the root directory of virtualenv that you just created.
+
+On *nix systems you need to add an entry to crontab (cron table) list.
+To do this, use the following command:
+
+```crontab -e```
+
+and then write a following entry into the file:
+
+```0 12 * * * cd /virtual/env/root/directory && bin/python3 packt_checker/src/check_packt.py > log.txt```
+
+This entry will tell cron to do the following commands:
+- cd (change directory) to /virtual/env/root/directory (this is where your virtualenv is).
+- if the previous command succeded:
+- run bin/python3 with the packt_checker/src/check_packt.py as an argument. This command will just run the main script with python3.
+- save the output of script to the log.txt file.
+
+On Windows in order to schedule the task to run daily at 15:00, you need to run the following command in cmd with administrator privileges.
 
 ```schtasks /create /sc DAILY /tn packtpub_checker /tr "dir:\path\to\python\python.exe dir:\path\to\app\check_packt.py [script_parameters]" /st 15:00```
 
