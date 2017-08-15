@@ -1,8 +1,12 @@
 import mimetypes
-import urllib.request
 from email.mime.multipart import MIMEMultipart
 from email.mime.image import MIMEImage
 from email.mime.text import MIMEText
+import sys
+if sys.version_info[0] < 3:
+    import urllib as url_requester
+else:
+    import urllib.request as url_requester
 
 SITE_URL = 'https://www.packtpub.com/packt/offers/free-learning'
 
@@ -81,7 +85,7 @@ def message_creator(img, image_url, title, description, sender, recipients):
 
 def image_getter(url):
     """Returns a file-like object of the given image."""
-    return urllib.request.urlopen(url).read()
+    return url_requester.urlopen(url).read()
 
 
 def _get_next_tag(tag):

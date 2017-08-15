@@ -1,16 +1,16 @@
-import sys
 from argparse import ArgumentParser
 from bs4 import BeautifulSoup
-
 import sys
+print('check_packt sys.path: ' + ';'.join(sys.path))
+print('importing config')
 import config as cfg
 import packt_offer as offer
 import message
 
 if sys.version_info[0] < 3:
-    import urllib as url
+    import urllib as url_requester
 else:
-    import urllib.request as url
+    import urllib.request as url_requester
 
 
 def main():
@@ -23,7 +23,7 @@ def main():
         print('URL: ' + args.url)
 
     # Prepare a page to be scraped.
-    page_content = url.urlopen(args.url).read()
+    page_content = url_requester.urlopen(args.url).read()
     soup = get_page_soup(page_content)
 
     # Get offer parameters.
@@ -40,8 +40,8 @@ def main():
             print('Offer description: ' + offer_description)
 
     # Prepare a message to be send.
-    image = offer.image_getter(args.url)
-    msg_to_be_send = offer.message_creator(image, offer_title, offer_description, args.sender, args.recipients)
+    image = offer.image_getter(offer_image_url)
+    msg_to_be_send = offer.message_creator(image, offer_image_url, offer_title, offer_description, args.sender, args.recipients)
 
     # Send a message.
     message.send_message(msg_to_be_send, args.sender, args.recipients)

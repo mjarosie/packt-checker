@@ -1,5 +1,8 @@
 from nose.tools import assert_equals
 from check_packt import parse_args
+import sys
+print('test_check_packt sys.path: ' + ';'.join(sys.path))
+print('importing config')
 import config as cfg
 
 
