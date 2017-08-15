@@ -1,4 +1,4 @@
-import urllib.request
+import sys
 from argparse import ArgumentParser
 from bs4 import BeautifulSoup
 
@@ -6,6 +6,11 @@ import sys
 import config as cfg
 import packt_offer as offer
 import message
+
+if sys.version_info[0] < 3:
+    import urllib as url
+else:
+    import urllib.request as url
 
 
 def main():
@@ -18,7 +23,7 @@ def main():
         print('URL: ' + args.url)
 
     # Prepare a page to be scraped.
-    page_content = urllib.request.urlopen(args.url).read()
+    page_content = url.urlopen(args.url).read()
     soup = get_page_soup(page_content)
 
     # Get offer parameters.
