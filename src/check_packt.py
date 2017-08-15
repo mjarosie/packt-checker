@@ -1,8 +1,6 @@
 from argparse import ArgumentParser
 from bs4 import BeautifulSoup
 import sys
-print('check_packt sys.path:\n' + '\n'.join(sys.path))
-print('importing config')
 import config as cfg
 import packt_offer as offer
 import message
