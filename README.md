@@ -1,7 +1,11 @@
 # Packtpub checker
 
+[![Build Status](https://travis-ci.org/mjarosie/packt_checker.svg?branch=master)](https://travis-ci.org/mjarosie/packt_checker)
+
 I proudly present packtpub_checker script, which can be used to set as a windows scheduled task
 to scrap packtpub.com free learning offers page in order to send its content about free book by email.
+
+Continuous integration is provided by running tests on travis-ci platform. Configuration of this process is placed in .travis.yaml file.
 
 ## Usage
 
