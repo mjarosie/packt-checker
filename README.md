@@ -22,8 +22,13 @@ To run the tests with code coverage, run ```nosetests --with-coverage --cover-pa
 
 ## Schedule as a task
 
-First, you need to set up a virtual environment and install the needed packages listed in requirements.txt using pip.
-Then, git clone this project into the root directory of virtualenv that you just created.
+First, you need to set up a virtual environment: ```python3 -m venv /path/to/new/virtual/environment```
+Afterwards ```git clone``` this project into the root directory of virtualenv that you just created.
+Next, activate the virtual environment: ```source /path/to/new/virtual/environment/bin/activate```
+(On windows it will be slightly different: ```/path/to/new/virtual/environment/Scripts/activate```)
+Then change directory into the project directory and install the needed packages listed in requirements.txt using pip: ```python -m pip install -r requirements.txt```
+
+### Unix
 
 On *nix systems you need to add an entry to crontab (cron table) list.
 To do this, use the following command:
@@ -35,13 +40,16 @@ and then write a following entry into the file:
 ```0 12 * * * cd /virtual/env/root/directory && bin/python3 packt_checker/src/check_packt.py > /path/to/log.txt 2>/path/to/error.txt```
 
 This entry will tell cron to do the following commands:
+- At every 0-th minute of 12-th hour of every day of every month, every weekday, do the following task:
 - cd (change directory) to /virtual/env/root/directory (this is where your virtualenv is).
 - if the previous command succeded:
 - run bin/python3 with the packt_checker/src/check_packt.py as an argument. This command will just run the main script with python3.
 - save the output of script to the log.txt file.
 
-On Windows in order to schedule the task to run daily at 15:00, you need to run the following command in cmd with administrator privileges.
+### Windows
 
-```schtasks /create /sc DAILY /tn packtpub_checker /tr "dir:\path\to\python\python.exe dir:\path\to\app\check_packt.py [script_parameters]" /st 15:00```
+On Windows in order to schedule the task to run daily at 12:00, you need to run the following command in cmd with administrator privileges.
+
+```schtasks /create /sc DAILY /tn packtpub_checker /tr "dir:\path\to\python\python.exe dir:\path\to\app\check_packt.py [script_parameters]" /st 12:00```
 
 In order to check the usage of schtasks, go [there](https://technet.microsoft.com/en-us/library/cc725744.aspx)
