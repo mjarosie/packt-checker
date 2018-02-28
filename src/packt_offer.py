@@ -25,7 +25,7 @@ def offer_title_extracter(soup):
     if tag is None:
         return ''
     try:
-        title = str.strip(tag.h2.string)
+        title = tag.h2.string.strip()
     except AttributeError:
         title = ''
     return title
